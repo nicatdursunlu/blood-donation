@@ -18,8 +18,10 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@firebase/auth": ["./node_modules/@firebase/auth/dist/index.rn.d.ts"]
+      "@firebase/auth": ["./node_modules/@firebase/auth/dist/index.rn.d.ts"],
+      "@/*": ["./*"]
     }
+    // "typeRoots": ["./node_modules/@types", "./types/declaration.d.ts"]
   },
   "include": ["."]
 }

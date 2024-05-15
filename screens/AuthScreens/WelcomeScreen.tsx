@@ -27,7 +27,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = ({ navigation }) => {
           onPress={() => navigation.push('SignUp')}
         />
         <View style={styles.row}>
-          <TCustomText weight={500} style={styles.text}>
+          <TCustomText weight={'semi'} style={styles.text}>
             have_an_account
           </TCustomText>
           <Link
