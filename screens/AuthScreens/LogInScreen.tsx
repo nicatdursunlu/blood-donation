@@ -1,0 +1,136 @@
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { Icon, Input } from '@ui-kitten/components'
+import { Alert, StyleSheet } from 'react-native'
+import { FC, useState } from 'react'
+import i18n from 'i18n-js'
+// import * as WebBrowser from 'expo-web-browser'
+
+import { setAuthStatus } from 'store/features/authSlice'
+import { CustomBtn, Link } from 'components'
+import { TLoginUser } from 'types/user.type'
+import { useAppDispatch } from 'store/hooks'
+import { getWidthByPercents } from 'utils'
+import { auth } from 'utils/firebase'
+import { Container } from 'commons'
+
+const fieldsInitialState = {
+  email: '',
+  password: '',
+} as TLoginUser
+
+export const LogInScreen: FC = () => {
+  const dispatch = useAppDispatch()
+
+  const [isLogIn, setIsLogIn] = useState<boolean>(true)
+  const [visible, setVisible] = useState<boolean>(false)
+  const [fields, setFields] = useState<TLoginUser>(fieldsInitialState)
+
+  const togglePass = (props: any) => (
+    <Icon
+      {...props}
+      name={visible ? 'eye' : 'eye-off'}
+      pack="ion"
+      onPress={() => setVisible(!visible)}
+    />
+  )
+
+  const fieldsChangeHandler = (name: string, value: string) => {
+    setFields((fields) => ({
+      ...fields,
+      [name]: value,
+    }))
+  }
+
+  const onSubmit = () => {
+    for (let key in fields) {
+      const value = fields[key as keyof TLoginUser]
+
+      if (value?.trim() === '') {
+        // Alert.alert(`${i18n.t(key)}  ${i18n.t('req')}`)
+        Alert.alert(`${key}  required`)
+        return false
+      }
+    }
+
+    const { email, password } = fields
+    console.log('fields', fields)
+
+    try {
+      const user = signInWithEmailAndPassword(auth, email, password).catch(
+        function (error) {
+          Alert.alert(error.code, error.message)
+          console.log(error.code, error.message)
+        }
+      )
+
+      dispatch(setAuthStatus(true))
+
+      console.log('user', user)
+    } catch (error: any) {
+      console.log('Login failed', error.message)
+    }
+  }
+
+  const sendEmailHandler = () => {
+    // sendEmail(fields.email)
+    // WebBrowser.openBrowserAsync(
+    //   'https://accounts.google.com/signin/v2/identifier?service=mail&passive=true&rm=false&continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&ss=1&scc=1&ltmpl=default&ltmplcache=2&emr=1&osid=1&flowName=GlifWebSignIn&flowEntry=ServiceLogin'
+    // )
+    setIsLogIn(true)
+    setFields((fields) => ({
+      ...fields,
+      password: '',
+    }))
+  }
+
+  return (
+    <Container style={{ backgroundColor: '#fff' }}>
+      <Input
+        value={fields.email}
+        // label={i18n.t('email')}
+        label={'Email'}
+        placeholder="Email"
+        // placeholder={i18n.t('email')}
+        keyboardType="email-address"
+        accessoryRight={(props) => (
+          <Icon {...props} name="user" pack="feather" />
+        )}
+        onChangeText={(val) => fieldsChangeHandler('email', val)}
+        style={styles.bottomSpacing}
+      />
+
+      {isLogIn && (
+        <>
+          <Input
+            value={fields.password}
+            // label={i18n.t('password')}
+            // placeholder={i18n.t('password')}
+            label={'Password'}
+            placeholder="Password"
+            secureTextEntry={!visible}
+            accessoryRight={togglePass}
+            onChangeText={(val) => fieldsChangeHandler('password', val)}
+            style={styles.bottomSpacing}
+          />
+          <Link
+            title="forgot_password"
+            style={styles.bottomSpacing}
+            onPress={() => setIsLogIn(false)}
+          />
+        </>
+      )}
+      <CustomBtn
+        style={{ borderWidth: 0 }}
+        width={getWidthByPercents(80, 2)}
+        title={isLogIn ? 'login' : 'send_email'}
+        onPress={isLogIn ? onSubmit : sendEmailHandler}
+      />
+    </Container>
+  )
+}
+
+const styles = StyleSheet.create({
+  bottomSpacing: {
+    marginBottom: 20,
+  },
+})

@@ -1,20 +1,24 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { ApplicationProvider, IconRegistry } from '@ui-kitten/components'
+import { PersistGate } from 'redux-persist/integration/react'
+import { StatusBar } from 'expo-status-bar'
+import * as eva from '@eva-design/eva'
+import { Provider } from 'react-redux'
+
+import { RootNavigation } from 'navigation/RootNavigation'
+import { FeatherIconsPack, IoniconsPack } from './utils'
+import { persistor, store } from 'store'
+import 'utils/i18n'
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <IconRegistry icons={[FeatherIconsPack, IoniconsPack]} />
+        <StatusBar style="auto" />
+        <ApplicationProvider {...eva} theme={eva.light}>
+          <RootNavigation />
+        </ApplicationProvider>
+      </PersistGate>
+    </Provider>
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
