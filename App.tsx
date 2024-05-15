@@ -5,7 +5,7 @@ import * as eva from '@eva-design/eva'
 import { Provider } from 'react-redux'
 
 import { RootNavigation } from 'navigation/RootNavigation'
-import { FeatherIconsPack, IoniconsPack } from './utils'
+import { FeatherIconsPack, IoniconsPack } from 'utils'
 import { persistor, store } from 'store'
 import 'utils/i18n'
 

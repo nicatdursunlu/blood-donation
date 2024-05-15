@@ -2,32 +2,27 @@ import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { CheckBox, Icon, Input } from '@ui-kitten/components'
 import { addDoc, collection } from 'firebase/firestore'
 import { StyleSheet, View, Alert } from 'react-native'
-import { FC, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { FC, useState } from 'react'
 
 import { SIGN_UP_INITIAL_STATE, AUTH_DATA } from 'utils/dummy'
-import { useAppDispatch, useAppSelector } from 'store/hooks'
 import { CustomBtn, Link, TCustomText } from 'components'
 import { setUser } from 'store/features/authSlice'
 import { TSignUpUser } from 'types/user.type'
+import { useAppDispatch } from 'store/hooks'
 import { ModalWindow } from './ModalWindow'
 import { getWidthByPercents } from 'utils'
 import { auth, db } from 'utils/firebase'
 import { Container } from 'commons'
 
 export const SignUpScreen: FC = () => {
+  const { t } = useTranslation()
   const [checked, setChecked] = useState<boolean>(false)
   const [showPass, setShowPass] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<boolean>(false)
   const [fields, setFields] = useState<TSignUpUser>(SIGN_UP_INITIAL_STATE)
 
   const dispatch = useAppDispatch()
-
-  const user = useAppSelector((state) => state.auth)
-  console.log('SIGN UP!!!!')
-
-  useEffect(() => {
-    console.log('user', user)
-  }, [])
 
   const fieldsChangeHandler = (name: string, value: string) => {
     setFields((fields: any) => ({
@@ -120,25 +115,22 @@ export const SignUpScreen: FC = () => {
         return (
           <Input
             key={item.value}
-            // label={i18n.t(label)}
-            // value={fields[value]}
-            label={label}
+            label={t(label)}
             value={fields[value as keyof TSignUpUser]}
-            // caption={i18n.t(caption)}
+            caption={t(caption)}
             // captionIcon={captionIcon}
             // keyboardType={keyboardType}
             // keyboardType={'default'}
             style={styles.bottomSpacing}
-            // placeholder={i18n.t(placeholder)}
-            placeholder={placeholder}
+            placeholder={t(placeholder)}
             onChangeText={(val) => fieldsChangeHandler(name, val)}
             accessoryRight={
-              value === 'password' || value === 'repassword'
+              value === 'password' || value === 'confirmPassword'
                 ? togglePass
                 : accessoryRight
             }
             secureTextEntry={
-              (value === 'password' || value === 'repassword') && !showPass
+              (value === 'password' || value === 'confirmPassword') && !showPass
             }
           />
         )
@@ -168,7 +160,6 @@ export const SignUpScreen: FC = () => {
         style={{ borderWidth: 0 }}
         width={getWidthByPercents(80, 2)}
       />
-      <TCustomText>create_account</TCustomText>
     </Container>
   )
 }
