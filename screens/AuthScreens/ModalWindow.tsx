@@ -1,13 +1,23 @@
-import React from 'react'
-import { Modal } from '@ui-kitten/components'
 import { View, StyleSheet, Dimensions, ScrollView } from 'react-native'
+import { Modal } from '@ui-kitten/components'
+import { FC } from 'react'
 
 import { TCustomText, CustomBtn } from 'components'
 import { getWidthByPercents } from 'utils'
 
 const { height } = Dimensions.get('screen')
 
-export const ModalWindow = ({ visible, onBackdropPress, onPress }: any) => {
+interface IModalWindowProps {
+  visible: boolean
+  onBackdropPress: () => void
+  onPress: () => void
+}
+
+export const ModalWindow: FC<IModalWindowProps> = ({
+  visible,
+  onBackdropPress,
+  onPress,
+}) => {
   return (
     <Modal
       visible={visible}
@@ -47,9 +57,4 @@ const styles = StyleSheet.create({
     fontSize: 15,
     paddingBottom: 50,
   },
-  // button: {
-  //   backgroundColor: "red",
-  //   width: 170,
-  //   borderRadius: 12,
-  // },
 })

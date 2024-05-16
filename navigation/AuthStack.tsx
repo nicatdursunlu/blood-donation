@@ -25,17 +25,17 @@ export const AuthStack: FC = () => {
       screenOptions={({ navigation }) => ({
         ...HeaderStyles,
         ...AuthHeader,
-        headerLeft: (props) => (
-          <Icon
-            {...props}
-            name="arrow-back"
-            pack="ion"
-            onPress={() => navigation.goBack()}
-            style={{ height: 25, color: '#fff', marginLeft: 15 }}
-          />
-        ),
+        // headerLeft: (props) => (
+        //   <Icon
+        //     {...props}
+        //     name="arrow-back"
+        //     pack="ion"
+        //     onPress={() => navigation.goBack()}
+        //     style={{ height: 25, color: '#fff', marginLeft: 15 }}
+        //   />
+        // ),
         headerTitleAlign: 'center',
-        headerMode: 'float',
+        headerMode: 'screen',
       })}
     >
       <Screen
