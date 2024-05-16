@@ -6,40 +6,30 @@ import {
   query,
   where,
 } from 'firebase/firestore'
+import { StyleSheet, View } from 'react-native'
+import { Button } from '@ui-kitten/components'
 import { FC, useEffect } from 'react'
-import { Text, View } from 'react-native'
+
+import { logOut } from 'store/features/authSlice'
 import { useAppDispatch } from 'store/hooks'
 import { auth, db } from 'utils/firebase'
-import { logOut } from 'store/features/authSlice'
-import { Button } from '@ui-kitten/components'
 
 export const HomeScreen: FC = () => {
   const dispatch = useAppDispatch()
 
   const getUserData = async () => {
-    const docRef = query(
-      collection(db, `users`),
-      where('uid', '==', '3QL5QejcnGaEvyJDqNoHLG1MIyj2')
-    )
-
-    const d = await getDoc(doc(db, 'users', '3QL5QejcnGaEvyJDqNoHLG1MIyj2'))
-
-    const collection_ref = collection(db, 'users')
     const q = query(
-      collection_ref,
-      where('uid', '==', '3QL5QejcnGaEvyJDqNoHLG1MIyj2')
+      collection(db, 'users'),
+      where('uid', '==', 'bJYJlTr3CKZFFmuwVw5wytngheu2')
     )
-    const doc_refs = await getDocs(q)
+    const doc = await getDocs(q)
+    const data = doc.docs[0].data()
 
-    //  return d.data()
-    //
-    // const docSnap = await getDoc(docRef)
-
-    console.log('USERS', doc_refs.docs)
+    // console.log('USERS', data)
   }
 
   useEffect(() => {
-    // getUserData()
+    getUserData()
   }, [])
 
   const logOutHandler = async () => {
@@ -49,10 +39,19 @@ export const HomeScreen: FC = () => {
 
   return (
     <View>
-      <Text>Hello World!</Text>
       <Button onPress={logOutHandler}>Log out</Button>
     </View>
   )
 }
 
-// export default HomeScreen
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginBottom: 60,
+  },
+  list: {
+    flexGrow: 1,
+    marginHorizontal: 15,
+    paddingTop: 15,
+  },
+})

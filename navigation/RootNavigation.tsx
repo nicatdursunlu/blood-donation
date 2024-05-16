@@ -3,6 +3,7 @@ import { FC, useCallback, useEffect, useState } from 'react'
 import * as SplashScreen from 'expo-splash-screen'
 
 import { useAppSelector } from 'store/hooks'
+import { LightTheme } from '@/styles/theme'
 import { loadFonts } from 'styles/fonts'
 import { AuthStack } from './AuthStack'
 import { AppStack } from './AppStack'
@@ -40,7 +41,7 @@ export const RootNavigation: FC = () => {
   }
 
   return (
-    <NavigationContainer onReady={onLayoutRootView}>
+    <NavigationContainer onReady={onLayoutRootView} theme={LightTheme}>
       {status ? <AppStack /> : <AuthStack />}
     </NavigationContainer>
   )

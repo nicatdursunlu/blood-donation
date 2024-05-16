@@ -1,25 +1,23 @@
-import React from 'react'
-import i18n from 'i18n-js'
-import { Icon } from '@ui-kitten/components'
 import { createStackNavigator } from '@react-navigation/stack'
-import {
-  useTheme,
-  getFocusedRouteNameFromRoute,
-} from '@react-navigation/native'
+import { useTheme } from '@react-navigation/native'
+import { Icon } from '@ui-kitten/components'
+import { FC } from 'react'
+
+import { BottomTabs } from './BottomTabs'
 import { HeaderStyles } from 'styles'
-import { HomeScreen } from 'screens'
 
 export type AppStackParams = {
   Home: undefined
+  BottomTabs: undefined
 }
 
 const { Navigator, Screen } = createStackNavigator<AppStackParams>()
 
-export const AppStack = () => {
+export const AppStack: FC = () => {
   const { colors } = useTheme()
+
   return (
     <Navigator
-      // headerMode="screen"
       screenOptions={({ navigation }) => ({
         ...HeaderStyles,
         headerLeft: (props) => (
@@ -35,26 +33,15 @@ export const AppStack = () => {
         headerMode: 'float',
       })}
     >
-      <Screen name="Home" options={{ title: 'Home' }}>
-        {({ ...props }) => <HomeScreen />}
-      </Screen>
+      <Screen
+        name="BottomTabs"
+        component={BottomTabs}
+        // options={({ route }) => ({
+        //   ...HeaderStyles,
+        //   headerTitle: getHeaderTitle(route),
+        //   headerLeft: null,
+        // })}
+      />
     </Navigator>
   )
 }
-
-// export function getHeaderTitle(route) {
-//   const username = useSelector(selectUsername)
-//   const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home'
-//   switch (routeName) {
-//     case 'Home':
-//       return i18n.t('home')
-//     case 'Find':
-//       return i18n.t('find')
-//     case 'Create':
-//       return i18n.t('new_post')
-//     case 'Chats':
-//       return i18n.t('chats')
-//     case 'Profile':
-//       return username
-//   }
-// }
