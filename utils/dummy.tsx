@@ -12,14 +12,6 @@ export const SLIDER_IMAGES = [
   { key: '4', uri: IMAGES.slider4 },
 ]
 
-export const SIGN_UP_INITIAL_STATE: TSignUpUser = {
-  fullName: '',
-  username: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
-}
-
 export const AUTH_DATA = [
   {
     label: 'fullName',
@@ -27,7 +19,6 @@ export const AUTH_DATA = [
     placeholder: 'johnd',
     name: 'fullName',
     caption: '',
-    keyboardType: '',
   },
   {
     label: 'username',
@@ -35,7 +26,6 @@ export const AUTH_DATA = [
     placeholder: 'johndo',
     caption: '',
     name: 'username',
-    keyboardType: '',
     accessoryRight: (props: any) => (
       <Icon {...props} name="user" pack="feather" />
     ),
@@ -49,7 +39,6 @@ export const AUTH_DATA = [
     accessoryRight: (props: any) => (
       <Icon {...props} name="mail" pack="feather" />
     ),
-    keyboardType: 'email-address',
   },
   {
     label: 'password',
@@ -57,10 +46,6 @@ export const AUTH_DATA = [
     placeholder: 'password',
     name: 'password',
     caption: 'pass_hint',
-    keyboardType: '',
-    captionIcon: (props: any) => (
-      <Icon {...props} name="alert-circle" pack="feather" />
-    ),
   },
   {
     label: 'repeat_pass',
@@ -68,10 +53,6 @@ export const AUTH_DATA = [
     placeholder: 'confirm_pass',
     name: 'repassword',
     caption: 'pass_hint',
-    keyboardType: '',
-    captionIcon: (props: any) => (
-      <Icon {...props} name="alert-circle" pack="feather" />
-    ),
   },
 ]
 

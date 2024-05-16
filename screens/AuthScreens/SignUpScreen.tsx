@@ -5,7 +5,6 @@ import { StyleSheet, View, Alert } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { FC, useState } from 'react'
 
-import { SIGN_UP_INITIAL_STATE, AUTH_DATA } from 'utils/dummy'
 import { CustomBtn, Link, TCustomText } from 'components'
 import { setUser } from 'store/features/authSlice'
 import { TSignUpUser } from 'types/user.type'
@@ -13,6 +12,7 @@ import { useAppDispatch } from 'store/hooks'
 import { ModalWindow } from './ModalWindow'
 import { getWidthByPercents } from 'utils'
 import { auth, db } from 'utils/firebase'
+import { AUTH_DATA } from 'utils/dummy'
 import { Container } from 'commons'
 
 export const SignUpScreen: FC = () => {
@@ -20,7 +20,13 @@ export const SignUpScreen: FC = () => {
   const [checked, setChecked] = useState<boolean>(false)
   const [showPass, setShowPass] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<boolean>(false)
-  const [fields, setFields] = useState<TSignUpUser>(SIGN_UP_INITIAL_STATE)
+  const [fields, setFields] = useState<TSignUpUser>({
+    fullName: '',
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  })
 
   const dispatch = useAppDispatch()
 
@@ -49,18 +55,19 @@ export const SignUpScreen: FC = () => {
     for (let key in fields) {
       const value = fields[key as keyof TSignUpUser]
 
+      console.log(value?.trim())
+
       if (value?.trim() === '') {
-        // Alert.alert(`${i18n.t(key)}  ${i18n.t('req')}`)
-        Alert.alert(`${key}  required`)
+        Alert.alert(`${t(key)}${t('req')}`)
         return false
       } else if (fields.password !== fields.confirmPassword) {
-        Alert.alert(`${key}  doesnt match`)
+        Alert.alert(t('pass_match'))
         return false
       } else if (!checked) {
-        // Alert.alert(i18n.t('agree'))
-        Alert.alert(`agreement`)
+        Alert.alert(t('agree'))
         return false
-      } else return true
+      }
+      return true
     }
   }
 
@@ -101,26 +108,17 @@ export const SignUpScreen: FC = () => {
   return (
     <Container style={{ backgroundColor: '#fff' }}>
       {AUTH_DATA.map((item) => {
-        const {
-          name,
-          label,
-          value,
-          caption,
-          placeholder,
-          captionIcon,
-          keyboardType,
-          accessoryRight,
-        } = item
+        const { name, label, value, caption, placeholder, accessoryRight } =
+          item
 
         return (
           <Input
             key={item.value}
-            label={t(label)}
+            label={() => (
+              <TCustomText style={{ marginBottom: 5 }}>{label}</TCustomText>
+            )}
             value={fields[value as keyof TSignUpUser]}
             caption={t(caption)}
-            // captionIcon={captionIcon}
-            // keyboardType={keyboardType}
-            // keyboardType={'default'}
             style={styles.bottomSpacing}
             placeholder={t(placeholder)}
             onChangeText={(val) => fieldsChangeHandler(name, val)}
@@ -137,11 +135,7 @@ export const SignUpScreen: FC = () => {
       })}
       <View style={styles.container}>
         <CheckBox checked={checked} onChange={(val) => setChecked(val)}>
-          {
-            <TCustomText style={styles.checkText}>
-              By creating an account you agree to our
-            </TCustomText>
-          }
+          {<TCustomText style={styles.checkText}>agreement</TCustomText>}
         </CheckBox>
         <Link
           title="terms_and_conditions"
@@ -154,12 +148,14 @@ export const SignUpScreen: FC = () => {
           visible={showModal}
         />
       </View>
-      <CustomBtn
-        onPress={onSubmit}
-        title="create_account"
-        style={{ borderWidth: 0 }}
-        width={getWidthByPercents(80, 2)}
-      />
+      <View style={{ justifyContent: 'flex-end', flex: 1, marginBottom: 40 }}>
+        <CustomBtn
+          onPress={onSubmit}
+          title="create_account"
+          style={{ borderWidth: 0 }}
+          width={getWidthByPercents(80, 2)}
+        />
+      </View>
     </Container>
   )
 }
