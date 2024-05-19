@@ -1,16 +1,16 @@
+import { collection, getDocs, query, where } from 'firebase/firestore'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { Icon, Input } from '@ui-kitten/components'
 import { Alert, StyleSheet } from 'react-native'
-import { FC, useState } from 'react'
-import i18n from 'i18n-js'
-// import * as WebBrowser from 'expo-web-browser'
+import { FC, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
-import { setAuthStatus } from 'store/features/authSlice'
+import { TLoginUser, TUser } from 'types/user.type'
+import { setUser } from 'store/features/authSlice'
 import { CustomBtn, Link } from 'components'
-import { TLoginUser } from 'types/user.type'
 import { useAppDispatch } from 'store/hooks'
 import { getWidthByPercents } from 'utils'
-import { auth } from 'utils/firebase'
+import { auth, db } from 'utils/firebase'
 import { Container } from 'commons'
 
 const fieldsInitialState = {
@@ -19,10 +19,12 @@ const fieldsInitialState = {
 } as TLoginUser
 
 export const LogInScreen: FC = () => {
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
   const [isLogIn, setIsLogIn] = useState<boolean>(true)
   const [visible, setVisible] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
   const [fields, setFields] = useState<TLoginUser>(fieldsInitialState)
 
   const togglePass = (props: any) => (
@@ -34,40 +36,49 @@ export const LogInScreen: FC = () => {
     />
   )
 
-  const fieldsChangeHandler = (name: string, value: string) => {
+  const fieldsChangeHandler = (name: keyof TLoginUser, value: string) => {
     setFields((fields) => ({
       ...fields,
       [name]: value,
     }))
   }
 
-  const onSubmit = () => {
-    for (let key in fields) {
-      const value = fields[key as keyof TLoginUser]
-
-      if (value?.trim() === '') {
-        // Alert.alert(`${i18n.t(key)}  ${i18n.t('req')}`)
-        Alert.alert(`${key}  required`)
-        return false
-      }
+  const getUserData = async (uid: string) => {
+    if (uid) {
+      const q = query(collection(db, 'users'), where('uid', '==', uid))
+      const doc = await getDocs(q)
+      return doc.docs[0].data() as TUser
     }
+    return {} as TUser
+  }
 
-    const { email, password } = fields
-    console.log('fields', fields)
+  const onSubmit = async () => {
+    // for (let key in fields) {
+    //   const value = fields[key as keyof TLoginUser]
+
+    //   if (value?.trim() === '') {
+    //     Alert.alert(`${t(key)} ${t('req')}`)
+    //     return false
+    //   }
+    // }
 
     try {
-      const user = signInWithEmailAndPassword(auth, email, password).catch(
-        function (error) {
-          Alert.alert(error.code, error.message)
-          console.log(error.code, error.message)
-        }
-      )
+      setLoading(true)
+      const { email, password } = fields
 
-      dispatch(setAuthStatus(true))
+      signInWithEmailAndPassword(auth, email, password).catch((error) => {
+        Alert.alert(error.code, error.message)
+        console.log(error.code, error.message)
+      })
 
-      console.log('user', user)
+      const uid = auth.currentUser?.uid
+
+      const currentUser = await getUserData(uid!)
+      dispatch(setUser(currentUser))
     } catch (error: any) {
       console.log('Login failed', error.message)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -87,10 +98,8 @@ export const LogInScreen: FC = () => {
     <Container style={{ backgroundColor: '#fff' }}>
       <Input
         value={fields.email}
-        // label={i18n.t('email')}
-        label={'Email'}
-        placeholder="Email"
-        // placeholder={i18n.t('email')}
+        label={t('email')}
+        placeholder={t('email')}
         keyboardType="email-address"
         accessoryRight={(props) => (
           <Icon {...props} name="user" pack="feather" />
@@ -103,10 +112,8 @@ export const LogInScreen: FC = () => {
         <>
           <Input
             value={fields.password}
-            // label={i18n.t('password')}
-            // placeholder={i18n.t('password')}
-            label={'Password'}
-            placeholder="Password"
+            label={t('password')}
+            placeholder={t('password')}
             secureTextEntry={!visible}
             accessoryRight={togglePass}
             onChangeText={(val) => fieldsChangeHandler('password', val)}
@@ -120,6 +127,7 @@ export const LogInScreen: FC = () => {
         </>
       )}
       <CustomBtn
+        loading={loading}
         style={{ borderWidth: 0 }}
         width={getWidthByPercents(80, 2)}
         title={isLogIn ? 'login' : 'send_email'}

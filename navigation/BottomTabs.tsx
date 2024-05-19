@@ -3,9 +3,9 @@ import { useTheme } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 import { FC } from 'react'
 
+import { CreatePostScreen, HomeScreen } from '@/screens'
 import { TabBarIcon } from '@/components/TabBarIcon'
 import { CustomTheme } from '@/styles/theme'
-import { HomeScreen } from '@/screens'
 
 export type BottomTabsParams = {
   Home: undefined
@@ -50,6 +50,11 @@ export const BottomTabs: FC = () => {
         name="Home"
         component={HomeScreen}
         options={{ title: t('home') }}
+      />
+      <Screen
+        name="Create"
+        component={CreatePostScreen}
+        options={{ title: t('create') }}
       />
     </Navigator>
   )

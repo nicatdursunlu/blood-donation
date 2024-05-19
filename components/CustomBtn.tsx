@@ -6,6 +6,7 @@ import {
   ViewStyle,
 } from 'react-native'
 import { useTheme } from '@react-navigation/native'
+import { Spinner } from '@ui-kitten/components'
 import { FC } from 'react'
 
 import { TCustomText } from './TCustomText'
@@ -16,6 +17,7 @@ interface ICustomBtnProps {
   width?: number
   style?: ViewStyle
   titleStyle?: TextStyle
+  loading?: boolean
 }
 
 export const CustomBtn: FC<ICustomBtnProps> = ({
@@ -24,6 +26,7 @@ export const CustomBtn: FC<ICustomBtnProps> = ({
   width,
   style,
   titleStyle = {},
+  loading,
 }) => {
   const { colors } = useTheme()
   return (
@@ -35,6 +38,7 @@ export const CustomBtn: FC<ICustomBtnProps> = ({
           style,
         ]}
       >
+        {loading && <Spinner status="control" size="small" />}
         <TCustomText weight="bold" style={{ ...styles.title, ...titleStyle }}>
           {title}
         </TCustomText>
@@ -51,10 +55,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#ff6767',
     borderWidth: StyleSheet.hairlineWidth,
+    display: 'flex',
+    flexDirection: 'row',
   },
   title: {
     color: '#fff',
     fontSize: 17,
     textTransform: 'uppercase',
+    marginLeft: 20,
   },
 })

@@ -55,8 +55,6 @@ export const SignUpScreen: FC = () => {
     for (let key in fields) {
       const value = fields[key as keyof TSignUpUser]
 
-      console.log(value?.trim())
-
       if (value?.trim() === '') {
         Alert.alert(`${t(key)}${t('req')}`)
         return false
@@ -91,12 +89,13 @@ export const SignUpScreen: FC = () => {
           photo: null,
         }
 
-        await addDoc(collection(db, 'users'), {
-          authProvider: 'local',
-          ...currentUser,
-        })
-
-        dispatch(setUser(currentUser))
+        if (auth.currentUser) {
+          await addDoc(collection(db, 'users'), {
+            authProvider: 'local',
+            ...currentUser,
+          })
+          dispatch(setUser(currentUser))
+        }
       }
     } catch (error: any) {
       const errorCode = error.code

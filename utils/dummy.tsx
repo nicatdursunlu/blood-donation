@@ -49,9 +49,9 @@ export const AUTH_DATA = [
   },
   {
     label: 'repeat_pass',
-    value: 'repassword',
+    value: 'confirmPassword',
     placeholder: 'confirm_pass',
-    name: 'repassword',
+    name: 'confirmPassword',
     caption: 'pass_hint',
   },
 ]
