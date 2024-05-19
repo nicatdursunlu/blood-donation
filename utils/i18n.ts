@@ -8,7 +8,7 @@ import az from 'translations/az.json'
 i18n.use(initReactI18next).init({
   // lng: getLocales()[0].languageCode,
   compatibilityJSON: 'v3',
-  fallbackLng: 'ru',
+  fallbackLng: 'en',
   resources: {
     en: {
       translation: en,

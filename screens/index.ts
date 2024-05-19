@@ -1,4 +1,5 @@
 export { WelcomeScreen } from './AuthScreens/WelcomeScreen'
 export { SignUpScreen } from './AuthScreens/SignUpScreen'
 export { LogInScreen } from './AuthScreens/LogInScreen'
+export { CreatePostScreen } from './CreatePostScreen'
 export { HomeScreen } from './HomeScreen/index'
