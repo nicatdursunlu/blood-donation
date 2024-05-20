@@ -11,7 +11,7 @@ export type BottomTabsParams = {
   Home: undefined
   Find: undefined
   Chats: undefined
-  Create: undefined
+  CreatePost: undefined
   Profile: undefined
 }
 
@@ -52,7 +52,7 @@ export const BottomTabs: FC = () => {
         options={{ title: t('home') }}
       />
       <Screen
-        name="Create"
+        name="CreatePost"
         component={CreatePostScreen}
         options={{ title: t('create') }}
       />

@@ -1,22 +1,28 @@
 import { Icon, IndexPath, Select, SelectItem } from '@ui-kitten/components'
-import * as Location from 'expo-location'
-
-import { useTheme } from '@react-navigation/native'
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs'
 import { Alert, StyleSheet, View } from 'react-native'
+import { useTheme } from '@react-navigation/native'
 import { useState, useEffect, FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LatLng } from 'react-native-maps'
+import * as Location from 'expo-location'
 
 import { CustomBtn, MapModal, Field, TCustomText } from '@/components'
+import { BottomTabsParams } from '@/navigation/BottomTabs'
 import { addPost } from '@/services/post.service'
 import { TCreatePost } from '@/types/post.type'
+import { useAppSelector } from '@/store/hooks'
 import { getWidthByPercents } from '@/utils'
 import { CustomTheme } from '@/styles/theme'
 import { BLOOD_TYPES } from '@/utils/dummy'
 import { Container } from '@/commons'
-import { useAppSelector } from '@/store/hooks'
 
-export const CreatePostScreen: FC = ({ navigation }: any) => {
+type CreatePostScreenProps = BottomTabScreenProps<
+  BottomTabsParams,
+  'CreatePost'
+>
+
+export const CreatePostScreen: FC<CreatePostScreenProps> = ({ navigation }) => {
   const { t } = useTranslation()
   const { colors } = useTheme() as CustomTheme
 
@@ -52,7 +58,7 @@ export const CreatePostScreen: FC = ({ navigation }: any) => {
       let { status } = await Location.requestForegroundPermissionsAsync()
       if (status !== 'granted') {
         setErrorMsg('Permission to access location was denied')
-      }
+      } else setErrorMsg(null)
 
       const location = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.High,

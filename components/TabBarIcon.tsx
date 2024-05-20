@@ -7,7 +7,7 @@ import { CustomTheme } from '@/styles/theme'
 const routeNames = {
   Home: 'home',
   Find: 'search',
-  Create: 'plus-circle',
+  CreatePost: 'plus-circle',
   Chats: 'message-circle',
   Profile: 'user',
 }
