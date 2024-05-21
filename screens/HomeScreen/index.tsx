@@ -1,35 +1,30 @@
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  where,
-} from 'firebase/firestore'
-import { StyleSheet, View } from 'react-native'
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs'
+import { FlatList, StyleSheet, View } from 'react-native'
 import { Button } from '@ui-kitten/components'
-import { FC, useEffect } from 'react'
+import { FC, useEffect, useState } from 'react'
 
+import { BottomTabsParams } from '@/navigation/BottomTabs'
+import { CardCover } from './components/CardCover'
+import { getPosts } from '@/services/post.service'
 import { logOut } from 'store/features/authSlice'
 import { useAppDispatch } from 'store/hooks'
-import { auth, db } from 'utils/firebase'
+import { TPost } from '@/types/post.type'
+import { auth } from 'utils/firebase'
 
-export const HomeScreen: FC = () => {
+type HomeScreenProps = BottomTabScreenProps<BottomTabsParams, 'Home'>
+
+export const HomeScreen: FC<HomeScreenProps> = () => {
   const dispatch = useAppDispatch()
 
-  const getUserData = async () => {
-    const q = query(
-      collection(db, 'users'),
-      where('uid', '==', 'bJYJlTr3CKZFFmuwVw5wytngheu2')
-    )
-    const doc = await getDocs(q)
-    const data = doc.docs[0].data()
+  const [posts, setPosts] = useState<TPost[]>([])
 
-    // console.log('USERS', data)
+  const getAllPosts = async () => {
+    const res = (await getPosts()) || []
+    setPosts(res)
   }
 
   useEffect(() => {
-    getUserData()
+    getAllPosts()
   }, [])
 
   const logOutHandler = async () => {
@@ -38,8 +33,15 @@ export const HomeScreen: FC = () => {
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <Button onPress={logOutHandler}>Log out</Button>
+
+      <FlatList
+        data={posts}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.list}
+        renderItem={(post) => <CardCover post={post.item} />}
+      />
     </View>
   )
 }
@@ -47,7 +49,7 @@ export const HomeScreen: FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginBottom: 60,
+    // marginBottom: 60,
   },
   list: {
     flexGrow: 1,

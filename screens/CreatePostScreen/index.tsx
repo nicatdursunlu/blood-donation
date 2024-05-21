@@ -171,6 +171,7 @@ export const CreatePostScreen: FC<CreatePostScreenProps> = ({ navigation }) => {
           onChangeText={(val) => fieldsChangeHandler('phoneNumber', val)}
         />
         <Field
+          label="add_location"
           placeholder="add_location"
           value={fields.location}
           disabled={true}

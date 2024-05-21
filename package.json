@@ -21,6 +21,7 @@
     "@reduxjs/toolkit": "^2.2.4",
     "@types/redux-logger": "^3.0.13",
     "@ui-kitten/components": "^5.3.1",
+    "date-fns": "^3.6.0",
     "expo": "~50.0.17",
     "expo-font": "^11.10.3",
     "expo-location": "~16.5.5",
