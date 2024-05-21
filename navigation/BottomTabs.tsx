@@ -3,9 +3,10 @@ import { useTheme } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 import { FC } from 'react'
 
+import { BottomTabBarStyles } from '@/styles/header-styles'
 import { CreatePostScreen, HomeScreen } from '@/screens'
-import { TabBarIcon } from '@/components/TabBarIcon'
 import { CustomTheme } from '@/styles/theme'
+import { TabBarIcon } from '@/components'
 
 export type BottomTabsParams = {
   Home: undefined
@@ -24,23 +25,9 @@ export const BottomTabs: FC = () => {
   return (
     <Navigator
       initialRouteName="Home"
-      // appearence={{
-      //   topPadding: 10,
-      //   horizontalPadding: 10,
-      // }}
       screenOptions={({ route }) => ({
-        tabBarActiveBackgroundColor: colors.tabBarActive,
-        tabBarActiveTintColor: colors.tabBarTint,
-        tabBarHideOnKeyboard: true,
-        headerShown: false,
-        tabBarItemStyle: {
-          paddingBottom: 15,
-          height: 70,
-        },
-        tabBarStyle: {
-          backgroundColor: '#fff',
-          marginBottom: 20,
-        },
+        tabBarActiveTintColor: colors.tabBarActive,
+        ...BottomTabBarStyles,
         tabBarIcon: ({ focused }) => (
           <TabBarIcon name={route.name} focused={focused} />
         ),

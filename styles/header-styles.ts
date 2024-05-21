@@ -1,6 +1,3 @@
-import { Image } from 'react-native'
-import { IMAGES } from './images'
-
 export const HeaderStyles = {
   headerMode: 'screen',
   headerTitleAlign: 'center',
@@ -27,4 +24,22 @@ export const AuthHeader = {
   //     }}
   //   />
   // ),
+}
+
+export const BottomTabBarStyles = {
+  tabBarHideOnKeyboard: true,
+  headerShown: false,
+  tabBarItemStyle: {
+    paddingBottom: 15,
+    height: 70,
+  },
+  tabBarStyle: {
+    backgroundColor: '#fff',
+    marginBottom: 15,
+    paddingTop: 10,
+  },
+  tabBarLabelStyle: {
+    fontSize: 16,
+    fontWeight: 'bold' as 'bold',
+  },
 }
