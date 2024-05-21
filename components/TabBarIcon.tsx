@@ -7,7 +7,7 @@ import { CustomTheme } from '@/styles/theme'
 const routeNames = {
   Home: 'home',
   Find: 'search',
-  CreatePost: 'plus-circle',
+  CreatePost: 'plus-square',
   Chats: 'message-circle',
   Profile: 'user',
 }
@@ -25,8 +25,8 @@ export const TabBarIcon: FC<ITabBarIconProps> = ({ name, focused }) => {
       name={routeNames[name]}
       pack="feather"
       style={{
-        height: 20,
-        color: focused ? colors.tabBarTint : '#999999',
+        height: 25,
+        color: focused ? colors.tabBarActive : '#999999',
       }}
     />
   )
