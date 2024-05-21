@@ -1,4 +1,10 @@
-import { StyleSheet, View, Image, TouchableOpacity } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Linking,
+  Alert,
+} from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import { Icon } from '@ui-kitten/components'
 import { FC } from 'react'
@@ -6,33 +12,37 @@ import { FC } from 'react'
 import { CustomTheme } from '@/styles/theme'
 import { TCustomText } from '@/components'
 import { TPost } from '@/types/post.type'
-import { ICONS } from '@/styles/icons'
 
 interface ICardBottomProps {
   post: TPost
 }
 
-export const CardBottom: FC<ICardBottomProps> = () => {
+export const CardBottom: FC<ICardBottomProps> = ({ post }) => {
   const { colors } = useTheme() as CustomTheme
-  const srcLight = ICONS.savedLight
+
+  const handlePhoneCall = async () => {}
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.phone}>
+      <TouchableOpacity style={styles.phone} onPress={handlePhoneCall}>
         <Icon
           name="phone"
           pack="feather"
           style={[styles.phoneIcon, { color: colors.text }]}
         />
         <TCustomText
-          weight="bold"
+          weight="semi"
           style={{ ...styles.phoneText, ...{ color: colors.text } }}
         >
-          call
+          Call
         </TCustomText>
       </TouchableOpacity>
       <TouchableOpacity>
-        <Image style={styles.saveIcon} src={srcLight} />
+        <Icon
+          name="bookmark-outline"
+          pack="ion"
+          style={[styles.bookmarkIcon, { color: colors.text }]}
+        />
       </TouchableOpacity>
     </View>
   )
@@ -55,9 +65,13 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     marginRight: 10,
   },
+  bookmarkIcon: {
+    height: 24,
+    paddingVertical: 6,
+    marginRight: 10,
+  },
   phoneText: {
-    fontSize: 12,
-    textTransform: 'uppercase',
+    fontSize: 14,
   },
   saveIcon: {
     width: 20,

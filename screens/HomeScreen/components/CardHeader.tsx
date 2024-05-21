@@ -2,10 +2,10 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import { FC } from 'react'
 
+import { AvatarMaker, TCustomText } from '@/components'
 import { getFormattedDate } from '@/utils/date'
 import { useAppSelector } from '@/store/hooks'
 import { CustomTheme } from '@/styles/theme'
-import { TCustomText } from '@/components'
 import { TPost } from '@/types/post.type'
 
 interface ICardHeaderProps {
@@ -25,6 +25,11 @@ export const CardHeader: FC<ICardHeaderProps> = ({ post }) => {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity>
+        <View style={styles.image}>
+          <AvatarMaker fullName={authorFullName} height={15} />
+        </View>
+      </TouchableOpacity>
       <View style={styles.info}>
         <TouchableOpacity style={styles.header}>
           {isMe ? (
