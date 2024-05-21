@@ -9,12 +9,14 @@ interface TCustomTextProps {
   weight?: 'regular' | 'bold' | 'semi'
   children: string
   style?: TextStyle
+  numberOfLines?: number
 }
 
 export const TCustomText: FC<TCustomTextProps> = ({
   weight = 'regular',
   style,
   children,
+  numberOfLines,
   ...rest
 }) => {
   const { t } = useTranslation()
@@ -26,7 +28,7 @@ export const TCustomText: FC<TCustomTextProps> = ({
   }
 
   return (
-    <Text style={styles} {...rest}>
+    <Text style={styles} numberOfLines={numberOfLines} {...rest}>
       {t(children)}
     </Text>
   )
