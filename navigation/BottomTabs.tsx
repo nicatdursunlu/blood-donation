@@ -3,8 +3,8 @@ import { useTheme } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 import { FC } from 'react'
 
+import { CreatePostScreen, HomeScreen, ProfileScreen } from '@/screens'
 import { BottomTabBarStyles } from '@/styles/header-styles'
-import { CreatePostScreen, HomeScreen } from '@/screens'
 import { CustomTheme } from '@/styles/theme'
 import { TabBarIcon } from '@/components'
 
@@ -42,6 +42,11 @@ export const BottomTabs: FC = () => {
         name="CreatePost"
         component={CreatePostScreen}
         options={{ title: t('create') }}
+      />
+      <Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{ title: t('profile') }}
       />
     </Navigator>
   )

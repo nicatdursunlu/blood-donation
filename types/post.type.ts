@@ -6,6 +6,7 @@ export type TCreatePost = {
   location: string
   userId: string
   authorFullName: string
+  createdAt: Date | string
 }
 
 export type TPost = {

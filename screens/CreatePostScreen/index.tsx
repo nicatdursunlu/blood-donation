@@ -43,6 +43,7 @@ export const CreatePostScreen: FC<CreatePostScreenProps> = ({ navigation }) => {
     location: '',
     userId: '',
     authorFullName: '',
+    createdAt: new Date().toDateString(),
   } as TCreatePost)
 
   const initialRegion = {
@@ -88,6 +89,7 @@ export const CreatePostScreen: FC<CreatePostScreenProps> = ({ navigation }) => {
     try {
       setLoading(true)
       const { uid: userId, fullName: authorFullName } = user
+      console.log('fields', fields)
       addPost({ ...fields, userId, authorFullName })
 
       navigation.navigate('Home')
