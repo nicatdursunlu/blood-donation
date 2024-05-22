@@ -1,9 +1,9 @@
-import { createStackNavigator } from '@react-navigation/stack'
 import {
   getFocusedRouteNameFromRoute,
   Route,
   useTheme,
 } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
 import { useTranslation } from 'react-i18next'
 import { Icon } from '@ui-kitten/components'
 import { FC } from 'react'
@@ -31,7 +31,7 @@ export const AppStack: FC = () => {
     Find: t('find'),
     CreatePost: t('new_post'),
     Chats: t('chats'),
-    Profile: 'user',
+    Profile: username,
   }
 
   const getHeaderTitle = (route: Route<string>) => {

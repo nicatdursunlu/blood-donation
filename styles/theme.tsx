@@ -30,6 +30,7 @@ export const DarkTheme: CustomTheme = {
   dark: true,
   colors: {
     ...DefaultTheme.colors,
+    primary: '#ff6767',
     background: '#000',
     card: '#0b0d17',
     border: '#999999',
@@ -62,6 +63,7 @@ export const LightTheme: CustomTheme = {
   dark: false,
   colors: {
     ...DefaultTheme.colors,
+    primary: '#ff6767',
     background: '#fff',
     card: '#f2f1f7',
     border: '#999999',

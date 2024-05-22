@@ -1,10 +1,4 @@
-import {
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Linking,
-  Alert,
-} from 'react-native'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import { Icon } from '@ui-kitten/components'
 import { FC } from 'react'
@@ -34,16 +28,16 @@ export const CardBottom: FC<ICardBottomProps> = ({ post }) => {
           weight="semi"
           style={{ ...styles.phoneText, ...{ color: colors.text } }}
         >
-          Call
+          call
         </TCustomText>
       </TouchableOpacity>
-      <TouchableOpacity>
+      {/* <TouchableOpacity>
         <Icon
           name="bookmark-outline"
           pack="ion"
           style={[styles.bookmarkIcon, { color: colors.text }]}
         />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   )
 }

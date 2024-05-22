@@ -14,7 +14,7 @@ import { TCustomText } from './TCustomText'
 interface ICustomBtnProps {
   title: string
   onPress: () => void
-  width?: number
+  width?: number | string
   style?: ViewStyle
   titleStyle?: TextStyle
   loading?: boolean
