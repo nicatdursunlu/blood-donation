@@ -18,6 +18,9 @@ export const authSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
+    deleteUserPhoto(state) {
+      state.user.photo = null
+    },
     setUserPhoto(state, action: PayloadAction<TUpdateUser['photo']>) {
       state.user = {
         ...state.user,
@@ -41,7 +44,13 @@ export const authSlice = createSlice({
   },
 })
 
-export const { setUser, setAuthStatus, logOut, updateUserInfo, setUserPhoto } =
-  authSlice.actions
+export const {
+  setUser,
+  setAuthStatus,
+  logOut,
+  updateUserInfo,
+  setUserPhoto,
+  deleteUserPhoto,
+} = authSlice.actions
 
 export default authSlice.reducer
