@@ -1,4 +1,3 @@
-import { FC, useState } from 'react'
 import {
   View,
   Alert,
@@ -8,15 +7,21 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native'
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from 'firebase/storage'
 import { doc, writeBatch } from 'firebase/firestore'
 import { useTheme } from '@react-navigation/native'
 import * as ImagePicker from 'expo-image-picker'
 import { Image } from 'react-native-elements'
 import { Camera } from 'expo-camera'
+import { FC, useState } from 'react'
 
+import { deleteUserPhoto, setUserPhoto } from '@/store/features/authSlice'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { setUserPhoto } from '@/store/features/authSlice'
 import { AvatarMaker, TCustomText } from '@/components'
 import { db, storage } from '@/utils/firebase'
 import { CustomTheme } from '@/styles/theme'
@@ -91,9 +96,21 @@ export const AvatarUploader: FC<Pick<EditProfileScreenProps, 'navigation'>> = ({
     setIsEdit(false)
   }
 
-  const deleteHandler = () => {
-    // removeAvatar()
-    setIsEdit(false)
+  const deleteHandler = async () => {
+    try {
+      const photoRef = ref(storage, `files/${user.uid}`)
+
+      await deleteObject(photoRef)
+      const batch = writeBatch(db)
+      const userRef = doc(db, 'users', uid)
+      batch.update(userRef, { photo: null })
+      await batch.commit()
+
+      dispatch(deleteUserPhoto())
+      setIsEdit(false)
+    } catch (error: any) {
+      Alert.alert(error.code, error.message)
+    }
   }
 
   const changePhotoHandler = () => {
