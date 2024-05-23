@@ -24,5 +24,6 @@ export type TUpdateUser = {
   uid: string
   fullName: string
   username: string
+  photo: string | null
   bloodType: string | null
 }
