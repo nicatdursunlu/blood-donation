@@ -1,21 +1,22 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { IndexPath, Select, SelectItem } from '@ui-kitten/components'
-import { useTheme } from '@react-navigation/native'
 import { Alert, StyleSheet, View } from 'react-native'
+import { useTheme } from '@react-navigation/native'
 import { FC, useState } from 'react'
 
-import { CustomBtn, Field, TCustomText } from '@/components'
-import { AppStackParams } from '@/navigation/AppStack'
-import { TUpdateUser } from '@/types/user.type'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { CustomBtn, Field, TCustomText } from '@/components'
+import { AvatarUploader } from './components/AvatarUploader'
+import { updateUserInfo } from '@/store/features/authSlice'
+import { AppStackParams } from '@/navigation/AppStack'
+import { updateUser } from '@/services/user.service'
+import { TUpdateUser } from '@/types/user.type'
 import { CustomTheme } from '@/styles/theme'
 import { getWidthByPercents } from '@/utils'
 import { BLOOD_TYPES } from '@/utils/dummy'
 import { Container } from '@/commons'
-import { updateUser } from '@/services/user.service'
-import { updateUserInfo } from '@/store/features/authSlice'
 
-type EditProfileScreenProps = NativeStackScreenProps<
+export type EditProfileScreenProps = NativeStackScreenProps<
   AppStackParams,
   'EditProfile'
 >
@@ -42,6 +43,7 @@ export const EditProfileScreen: FC<EditProfileScreenProps> = ({
     fullName,
     username,
     bloodType,
+    photo: null,
   })
 
   const fieldsChangeHandler = (name: keyof TUpdateUser, value: string) =>
@@ -81,7 +83,7 @@ export const EditProfileScreen: FC<EditProfileScreenProps> = ({
 
   return (
     <Container>
-      {/* <AvatarUploader navigation={navigation} fullname={fullname} /> */}
+      <AvatarUploader navigation={navigation} />
       <View style={styles.row}>
         <TCustomText>fullName</TCustomText>
         <Field
