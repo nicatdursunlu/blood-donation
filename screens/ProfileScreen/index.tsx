@@ -1,9 +1,11 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { ActivityIndicator, StyleSheet, View } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import { FC, useEffect, useState } from 'react'
 
 import { CardCover } from '../HomeScreen/components/CardCover'
+import { AppStackParams } from '@/navigation/AppStack'
 import { UserInfo } from './components/UserInfo'
 import { useAppSelector } from '@/store/hooks'
 import { CustomTheme } from '@/styles/theme'
@@ -12,7 +14,12 @@ import { TPost } from '@/types/post.type'
 import { Container } from '@/commons'
 import { db } from '@/utils/firebase'
 
-export const ProfileScreen: FC = () => {
+export type ProfileScreenProps = NativeStackScreenProps<
+  AppStackParams,
+  'Profile'
+>
+
+export const ProfileScreen: FC<ProfileScreenProps> = ({ navigation }) => {
   const { colors } = useTheme() as CustomTheme
 
   const {
@@ -29,7 +36,7 @@ export const ProfileScreen: FC = () => {
       const querySnapshot = await getDocs(q)
 
       querySnapshot.forEach((doc) => {
-        setPosts((posts) => [...posts, doc.data() as TPost])
+        setPosts((posts) => [...posts, { id: doc.id, ...doc.data() } as TPost])
       })
     } catch (error) {
       console.log(error)
@@ -44,7 +51,7 @@ export const ProfileScreen: FC = () => {
 
   return (
     <Container>
-      <UserInfo />
+      <UserInfo navigation={navigation} />
       <View style={styles.divider}>
         <View style={[styles.line, { borderColor: colors.divider }]} />
         <TCustomText>posts</TCustomText>

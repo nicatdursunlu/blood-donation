@@ -1,4 +1,5 @@
 import {
+  FlexStyle,
   StyleSheet,
   TextStyle,
   TouchableOpacity,
@@ -9,12 +10,13 @@ import { useTheme } from '@react-navigation/native'
 import { Spinner } from '@ui-kitten/components'
 import { FC } from 'react'
 
+import { CustomTheme } from '@/styles/theme'
 import { TCustomText } from './TCustomText'
 
 interface ICustomBtnProps {
   title: string
   onPress: () => void
-  width?: number | string
+  width?: FlexStyle['width']
   style?: ViewStyle
   titleStyle?: TextStyle
   loading?: boolean
@@ -28,17 +30,13 @@ export const CustomBtn: FC<ICustomBtnProps> = ({
   titleStyle = {},
   loading,
 }) => {
-  const { colors } = useTheme()
+  const { colors } = useTheme() as CustomTheme
   return (
     <TouchableOpacity onPress={onPress} style={{ width }}>
-      <View
-        style={[
-          styles.btn,
-          // { borderColor: colors?.inputBorder },
-          style,
-        ]}
-      >
-        {loading && <Spinner status="control" size="small" />}
+      <View style={[styles.btn, { borderColor: colors?.inputBorder }, style]}>
+        {loading && (
+          <Spinner style={{ marginRight: 20 }} status="control" size="small" />
+        )}
         <TCustomText weight="bold" style={{ ...styles.title, ...titleStyle }}>
           {title}
         </TCustomText>
@@ -62,6 +60,5 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 17,
     textTransform: 'uppercase',
-    marginLeft: 20,
   },
 })

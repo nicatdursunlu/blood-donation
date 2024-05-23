@@ -9,12 +9,15 @@ import { Icon } from '@ui-kitten/components'
 import { FC } from 'react'
 
 import { useAppSelector } from '@/store/hooks'
+import { EditProfileScreen } from '@/screens'
 import { BottomTabs } from './BottomTabs'
 import { HeaderStyles } from 'styles'
 
 export type AppStackParams = {
   Home: undefined
+  Profile: undefined
   BottomTabs: undefined
+  EditProfile: undefined
 }
 
 const { Navigator, Screen } = createStackNavigator<AppStackParams>()
@@ -64,6 +67,14 @@ export const AppStack: FC = () => {
           headerTitle: getHeaderTitle(route),
           headerLeft: () => null,
         })}
+      />
+      <Screen
+        name="EditProfile"
+        component={EditProfileScreen}
+        options={{
+          headerLeft: () => null,
+          title: username,
+        }}
       />
     </Navigator>
   )

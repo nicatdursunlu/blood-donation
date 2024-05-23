@@ -1,7 +1,7 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
 
-import { TUser } from 'types/user.type'
+import { TUpdateUser, TUser } from 'types/user.type'
 
 type AuthState = {
   status: boolean
@@ -18,6 +18,9 @@ export const authSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
+    updateUserInfo(state, action: PayloadAction<TUpdateUser>) {
+      state.user = { ...state.user, ...action.payload }
+    },
     setUser(state, action: PayloadAction<TUser>) {
       state.status = true
       state.user = action.payload
@@ -32,6 +35,7 @@ export const authSlice = createSlice({
   },
 })
 
-export const { setUser, setAuthStatus, logOut } = authSlice.actions
+export const { setUser, setAuthStatus, logOut, updateUserInfo } =
+  authSlice.actions
 
 export default authSlice.reducer
