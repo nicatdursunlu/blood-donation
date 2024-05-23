@@ -19,3 +19,10 @@ export type TUser = {
   bloodType: string | null
   photo: string | null
 }
+
+export type TUpdateUser = {
+  uid: string
+  fullName: string
+  username: string
+  bloodType: string | null
+}

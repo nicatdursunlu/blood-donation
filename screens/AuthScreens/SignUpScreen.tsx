@@ -1,7 +1,7 @@
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { CheckBox, Icon, Input } from '@ui-kitten/components'
-import { addDoc, collection } from 'firebase/firestore'
 import { StyleSheet, View, Alert } from 'react-native'
+import { doc, setDoc } from 'firebase/firestore'
 import { useTranslation } from 'react-i18next'
 import { FC, useState } from 'react'
 
@@ -90,7 +90,9 @@ export const SignUpScreen: FC = () => {
         }
 
         if (auth.currentUser) {
-          await addDoc(collection(db, 'users'), {
+          const usersRef = doc(db, 'users', user.uid)
+
+          await setDoc(usersRef, {
             authProvider: 'local',
             ...currentUser,
           })

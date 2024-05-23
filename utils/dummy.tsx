@@ -1,7 +1,5 @@
-import React from 'react'
 import { IMAGES } from '../styles/images'
 import { Icon } from '@ui-kitten/components'
-import { TSignUpUser } from 'types/user.type'
 
 export const BLOOD_TYPES = ['O+', 'O-', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-']
 export const LANGUAGES = ['english', 'azerbaijani', 'russian']

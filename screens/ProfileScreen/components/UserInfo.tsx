@@ -5,13 +5,11 @@ import { FC } from 'react'
 import { AvatarMaker, CustomBtn, CustomText, TCustomText } from '@/components'
 import { CustomTheme } from '@/styles/theme'
 import { useAppSelector } from '@/store/hooks'
+import { ProfileScreenProps } from '..'
 
-export const UserInfo: FC = ({
-  photo,
-  onPress,
-
-  profileType,
-}: any) => {
+export const UserInfo: FC<Pick<ProfileScreenProps, 'navigation'>> = ({
+  navigation,
+}) => {
   const { colors } = useTheme() as CustomTheme
 
   const { user } = useAppSelector((state) => state.auth)
@@ -21,6 +19,10 @@ export const UserInfo: FC = ({
   const btnColor = {
     borderColor: colors.inputBorder,
     backgroundColor: colors.inputBG,
+  }
+
+  const editProfile = () => {
+    navigation.navigate('EditProfile')
   }
 
   return (
@@ -43,9 +45,9 @@ export const UserInfo: FC = ({
       </CustomText>
       <CustomBtn
         width="100%"
-        title={!!profileType ? 'send_message' : 'edit_profile'}
+        title="edit_profile"
         titleStyle={{ ...styles.btnText, ...{ color: colors.text } }}
-        onPress={onPress}
+        onPress={editProfile}
         // style={[styles.btn, btnColor]}
         style={{ ...styles.btn, ...btnColor }}
       />
