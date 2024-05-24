@@ -109,7 +109,7 @@ export const EditProfileScreen: FC<EditProfileScreenProps> = ({
           onSelect={(index) => {
             handleSelectBloodType(index)
           }}
-          style={styles.select}
+          style={{ width }}
           value={BLOOD_TYPES[selectedIndex.row]}
         >
           {BLOOD_TYPES.map((type) => (
@@ -159,8 +159,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  select: {
-    width: '67%',
   },
 })

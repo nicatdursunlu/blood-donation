@@ -1,8 +1,8 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { collection, getDocs, query, where } from 'firebase/firestore'
+import { useFocusEffect, useTheme } from '@react-navigation/native'
 import { ActivityIndicator, StyleSheet, View } from 'react-native'
-import { useTheme } from '@react-navigation/native'
-import { FC, useEffect, useState } from 'react'
+import { FC, useCallback, useState } from 'react'
 
 import { CardCover } from '../HomeScreen/components/CardCover'
 import { AppStackParams } from '@/navigation/AppStack'
@@ -45,9 +45,11 @@ export const ProfileScreen: FC<ProfileScreenProps> = ({ navigation }) => {
     }
   }
 
-  useEffect(() => {
-    getPosts()
-  }, [])
+  useFocusEffect(
+    useCallback(() => {
+      getPosts()
+    }, [])
+  )
 
   return (
     <Container>
@@ -65,7 +67,9 @@ export const ProfileScreen: FC<ProfileScreenProps> = ({ navigation }) => {
             style={{ marginTop: 30 }}
           />
         ) : (
-          posts.map((post) => <CardCover key={post.id} post={post} />)
+          posts.map((post, index: number) => (
+            <CardCover key={post.id + index} post={post} />
+          ))
         )}
       </View>
     </Container>

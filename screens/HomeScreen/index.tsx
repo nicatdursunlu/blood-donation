@@ -1,8 +1,7 @@
-import { BottomTabScreenProps } from '@react-navigation/bottom-tabs'
 import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native'
-import { useTheme } from '@react-navigation/native'
-import { FC, useEffect, useState } from 'react'
-import { Button } from '@ui-kitten/components'
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs'
+import { useFocusEffect, useTheme } from '@react-navigation/native'
+import { FC, useCallback, useState } from 'react'
 
 import { BottomTabsParams } from '@/navigation/BottomTabs'
 import { CardCover } from './components/CardCover'
@@ -11,6 +10,7 @@ import { logOut } from 'store/features/authSlice'
 import { useAppDispatch } from 'store/hooks'
 import { CustomTheme } from '@/styles/theme'
 import { TPost } from '@/types/post.type'
+import { CustomBtn } from '@/components'
 import { auth } from 'utils/firebase'
 
 type HomeScreenProps = BottomTabScreenProps<BottomTabsParams, 'Home'>
@@ -30,9 +30,11 @@ export const HomeScreen: FC<HomeScreenProps> = () => {
     setLoading(false)
   }
 
-  useEffect(() => {
-    getAllPosts()
-  }, [])
+  useFocusEffect(
+    useCallback(() => {
+      getAllPosts()
+    }, [])
+  )
 
   const logOutHandler = async () => {
     await auth.signOut()
@@ -41,8 +43,6 @@ export const HomeScreen: FC<HomeScreenProps> = () => {
 
   return (
     <View style={styles.container}>
-      <Button onPress={logOutHandler}>Log out</Button>
-
       {loading ? (
         <ActivityIndicator
           size="large"
@@ -57,6 +57,7 @@ export const HomeScreen: FC<HomeScreenProps> = () => {
           renderItem={(post) => <CardCover post={post.item} />}
         />
       )}
+      <CustomBtn title="Log out" onPress={logOutHandler} />
     </View>
   )
 }
@@ -64,7 +65,6 @@ export const HomeScreen: FC<HomeScreenProps> = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // marginBottom: 60,
   },
   list: {
     flexGrow: 1,

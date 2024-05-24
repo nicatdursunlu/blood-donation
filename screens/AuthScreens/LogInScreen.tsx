@@ -2,8 +2,8 @@ import { collection, getDocs, query, where } from 'firebase/firestore'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { Icon, Input } from '@ui-kitten/components'
 import { Alert, StyleSheet } from 'react-native'
-import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { FC, useState } from 'react'
 
 import { TLoginUser, TUser } from 'types/user.type'
 import { setUser } from 'store/features/authSlice'
@@ -66,17 +66,14 @@ export const LogInScreen: FC = () => {
       setLoading(true)
       const { email, password } = fields
 
-      signInWithEmailAndPassword(auth, email, password).catch((error) => {
-        Alert.alert(error.code, error.message)
-        console.log(error.code, error.message)
-      })
+      await signInWithEmailAndPassword(auth, email, password)
 
       const uid = auth.currentUser?.uid
-
       const currentUser = await getUserData(uid!)
       dispatch(setUser(currentUser))
     } catch (error: any) {
-      console.log('Login failed', error.message)
+      Alert.alert(error.code, error.message)
+      console.log(error.code, error.message)
     } finally {
       setLoading(false)
     }
