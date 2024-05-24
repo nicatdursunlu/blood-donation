@@ -26,7 +26,7 @@ export const CardCover: FC<ICardCoverProps> = ({ post }) => {
 
 const styles = StyleSheet.create({
   card: {
-    marginBottom: 35,
+    marginBottom: 20,
     borderRadius: 10,
   },
 })

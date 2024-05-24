@@ -1,10 +1,11 @@
-import { useTheme } from '@react-navigation/native'
 import { ActivityIndicator, StyleSheet, View } from 'react-native'
+import { useTheme } from '@react-navigation/native'
+import { Image } from 'react-native-elements'
 import { FC } from 'react'
 
 import { AvatarMaker, CustomBtn, CustomText, TCustomText } from '@/components'
-import { CustomTheme } from '@/styles/theme'
 import { useAppSelector } from '@/store/hooks'
+import { CustomTheme } from '@/styles/theme'
 import { ProfileScreenProps } from '..'
 
 export const UserInfo: FC<Pick<ProfileScreenProps, 'navigation'>> = ({
@@ -14,7 +15,7 @@ export const UserInfo: FC<Pick<ProfileScreenProps, 'navigation'>> = ({
 
   const { user } = useAppSelector((state) => state.auth)
 
-  const { fullName, bloodType } = user
+  const { fullName, bloodType, photo } = user
 
   const btnColor = {
     borderColor: colors.inputBorder,
@@ -29,9 +30,18 @@ export const UserInfo: FC<Pick<ProfileScreenProps, 'navigation'>> = ({
     <View style={styles.container}>
       <View style={styles.row}>
         <View style={styles.image}>
-          <View style={styles.img}>
-            <AvatarMaker fullName={fullName} height={40} />
-          </View>
+          {photo ? (
+            <Image
+              style={styles.img}
+              source={{ uri: photo }}
+              PlaceholderContent={<ActivityIndicator />}
+              placeholderStyle={{ backgroundColor: '#f2f4f8' }}
+            />
+          ) : (
+            <View style={styles.img}>
+              <AvatarMaker fullName={fullName} height={40} />
+            </View>
+          )}
         </View>
         <View style={styles.info}>
           <CustomText weight="bold" style={styles.value}>
@@ -48,7 +58,6 @@ export const UserInfo: FC<Pick<ProfileScreenProps, 'navigation'>> = ({
         title="edit_profile"
         titleStyle={{ ...styles.btnText, ...{ color: colors.text } }}
         onPress={editProfile}
-        // style={[styles.btn, btnColor]}
         style={{ ...styles.btn, ...btnColor }}
       />
     </View>

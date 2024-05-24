@@ -35,14 +35,17 @@ export const CreatePostScreen: FC<CreatePostScreenProps> = ({ navigation }) => {
   const [selectedIndex, setSelectedIndex] = useState<IndexPath>(
     new IndexPath(0)
   )
+  const { uid: userId, fullName: authorFullName, photo: authorPhoto } = user
+
   const [fields, setFields] = useState<TCreatePost>({
     description: '',
     phoneNumber: '',
     bloodType: '',
     coordinates: [],
     location: '',
-    userId: '',
-    authorFullName: '',
+    userId,
+    authorPhoto,
+    authorFullName,
     createdAt: new Date().toDateString(),
   } as TCreatePost)
 
@@ -88,9 +91,7 @@ export const CreatePostScreen: FC<CreatePostScreenProps> = ({ navigation }) => {
   const onSubmit = () => {
     try {
       setLoading(true)
-      const { uid: userId, fullName: authorFullName } = user
-      console.log('fields', fields)
-      addPost({ ...fields, userId, authorFullName })
+      addPost(fields)
 
       navigation.navigate('Home')
     } catch (error: any) {

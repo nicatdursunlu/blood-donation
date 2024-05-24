@@ -6,10 +6,12 @@ export type TCreatePost = {
   location: string
   userId: string
   authorFullName: string
+  authorPhoto: string | null
   createdAt: Date | string
 }
 
 export type TPost = {
+  authorPhoto: string | null
   authorFullName: string
   bloodType: string
   coordinates: number[]

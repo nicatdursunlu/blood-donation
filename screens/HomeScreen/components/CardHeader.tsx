@@ -1,5 +1,11 @@
-import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native'
 import { useTheme } from '@react-navigation/native'
+import { Image } from 'react-native-elements'
 import { FC } from 'react'
 
 import { AvatarMaker, TCustomText } from '@/components'
@@ -19,28 +25,31 @@ export const CardHeader: FC<ICardHeaderProps> = ({ post }) => {
 
   const { colors } = useTheme() as CustomTheme
 
-  const { authorFullName, location, userId, createdAt } = post
+  const { authorFullName, location, userId, createdAt, authorPhoto } = post
 
-  const isMe = uid === userId
+  // const isMe = uid === userId
 
   return (
     <View style={styles.container}>
       <TouchableOpacity>
-        <View style={styles.image}>
-          <AvatarMaker fullName={authorFullName} height={15} />
-        </View>
+        {authorPhoto ? (
+          <Image
+            style={styles.image}
+            source={{ uri: authorPhoto }}
+            PlaceholderContent={<ActivityIndicator color={colors.primary} />}
+            placeholderStyle={{ backgroundColor: '#f2f4f8' }}
+          />
+        ) : (
+          <View style={styles.image}>
+            <AvatarMaker fullName={authorFullName} height={15} />
+          </View>
+        )}
       </TouchableOpacity>
       <View style={styles.info}>
         <TouchableOpacity style={styles.header}>
-          {isMe ? (
-            <TCustomText weight="semi" style={styles.authorFullName}>
-              me
-            </TCustomText>
-          ) : (
-            <TCustomText weight="semi" style={styles.authorFullName}>
-              {authorFullName}
-            </TCustomText>
-          )}
+          <TCustomText weight="semi" style={styles.authorFullName}>
+            {authorFullName}
+          </TCustomText>
           <TCustomText
             weight="regular"
             style={{ ...styles.time, ...{ color: colors.time } }}
