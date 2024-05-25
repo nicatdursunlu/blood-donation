@@ -7,6 +7,7 @@ import { FONT_FAMILIES } from 'styles/fonts'
 interface ICustomTextProps {
   weight?: 'regular' | 'bold' | 'semi'
   children: any
+  numberOfLines?: number
   style?: TextStyle
 }
 
@@ -14,6 +15,7 @@ export const CustomText: FC<ICustomTextProps> = ({
   weight = 'regular',
   style,
   children,
+  numberOfLines,
   ...rest
 }) => {
   const { colors } = useTheme()
@@ -24,7 +26,7 @@ export const CustomText: FC<ICustomTextProps> = ({
   }
 
   return (
-    <Text style={styles} {...rest}>
+    <Text style={styles} numberOfLines={numberOfLines} {...rest}>
       {children}
     </Text>
   )
