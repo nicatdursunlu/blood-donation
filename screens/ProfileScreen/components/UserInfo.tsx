@@ -8,14 +8,14 @@ import { useAppSelector } from '@/store/hooks'
 import { CustomTheme } from '@/styles/theme'
 import { ProfileScreenProps } from '..'
 
-export const UserInfo: FC<Pick<ProfileScreenProps, 'navigation'>> = ({
-  navigation,
-}) => {
+export const UserInfo: FC<ProfileScreenProps> = ({ navigation, route }) => {
   const { colors } = useTheme() as CustomTheme
 
   const { user } = useAppSelector((state) => state.auth)
 
   const { fullName, bloodType, photo } = user
+
+  const isMyProfile = !route.params?.userId
 
   const btnColor = {
     borderColor: colors.inputBorder,
@@ -53,13 +53,15 @@ export const UserInfo: FC<Pick<ProfileScreenProps, 'navigation'>> = ({
       <CustomText weight="bold" style={styles.name}>
         {fullName}
       </CustomText>
-      <CustomBtn
-        width="100%"
-        title="edit_profile"
-        titleStyle={{ ...styles.btnText, ...{ color: colors.text } }}
-        onPress={editProfile}
-        style={{ ...styles.btn, ...btnColor }}
-      />
+      {isMyProfile && (
+        <CustomBtn
+          width="100%"
+          title="edit_profile"
+          titleStyle={{ ...styles.btnText, ...{ color: colors.text } }}
+          onPress={editProfile}
+          style={{ ...styles.btn, ...btnColor }}
+        />
+      )}
     </View>
   )
 }

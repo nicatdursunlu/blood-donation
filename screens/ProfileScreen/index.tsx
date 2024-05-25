@@ -19,7 +19,10 @@ export type ProfileScreenProps = NativeStackScreenProps<
   'Profile'
 >
 
-export const ProfileScreen: FC<ProfileScreenProps> = ({ navigation }) => {
+export const ProfileScreen: FC<ProfileScreenProps> = ({
+  navigation,
+  route,
+}) => {
   const { colors } = useTheme() as CustomTheme
 
   const {
@@ -53,7 +56,7 @@ export const ProfileScreen: FC<ProfileScreenProps> = ({ navigation }) => {
 
   return (
     <Container>
-      <UserInfo navigation={navigation} />
+      <UserInfo route={route} navigation={navigation} />
       <View style={styles.divider}>
         <View style={[styles.line, { borderColor: colors.divider }]} />
         <TCustomText>posts</TCustomText>
@@ -68,7 +71,7 @@ export const ProfileScreen: FC<ProfileScreenProps> = ({ navigation }) => {
           />
         ) : (
           posts.map((post, index: number) => (
-            <CardCover key={post.id + index} post={post} />
+            <CardCover post={post} key={post.id + index} />
           ))
         )}
       </View>
