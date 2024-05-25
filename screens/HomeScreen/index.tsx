@@ -14,8 +14,9 @@ import { CustomBtn } from '@/components'
 import { auth } from 'utils/firebase'
 
 type HomeScreenProps = BottomTabScreenProps<BottomTabsParams, 'Home'>
+export type HomeScreenNavigationProp = HomeScreenProps['navigation']
 
-export const HomeScreen: FC<HomeScreenProps> = () => {
+export const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
   const dispatch = useAppDispatch()
 
   const { colors } = useTheme() as CustomTheme
@@ -54,7 +55,9 @@ export const HomeScreen: FC<HomeScreenProps> = () => {
           data={posts}
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.list}
-          renderItem={(post) => <CardCover post={post.item} />}
+          renderItem={(post) => (
+            <CardCover navigation={navigation} post={post.item} />
+          )}
         />
       )}
       <CustomBtn title="Log out" onPress={logOutHandler} />

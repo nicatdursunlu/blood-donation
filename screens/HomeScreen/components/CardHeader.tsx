@@ -11,27 +11,43 @@ import { FC } from 'react'
 import { AvatarMaker, TCustomText } from '@/components'
 import { getFormattedDate } from '@/utils/date'
 import { useAppSelector } from '@/store/hooks'
+import { HomeScreenNavigationProp } from '..'
 import { CustomTheme } from '@/styles/theme'
 import { TPost } from '@/types/post.type'
 
 interface ICardHeaderProps {
   post: TPost
+  navigation?: HomeScreenNavigationProp
 }
 
-export const CardHeader: FC<ICardHeaderProps> = ({ post }) => {
+export const CardHeader: FC<ICardHeaderProps> = ({ post, navigation }) => {
   const {
     user: { uid },
   } = useAppSelector((state) => state.auth)
 
   const { colors } = useTheme() as CustomTheme
 
-  const { authorFullName, location, userId, createdAt, authorPhoto } = post
+  const {
+    authorFullName,
+    location,
+    userId,
+    createdAt,
+    authorPhoto,
+    bloodType,
+  } = post
 
-  // const isMe = uid === userId
+  const isMyProfile = uid === userId
+
+  const goToProfile = () => {
+    if (navigation)
+      isMyProfile
+        ? navigation.navigate('Profile', {})
+        : navigation.navigate('Profile', { authorFullName, userId, bloodType })
+  }
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={goToProfile}>
         {authorPhoto ? (
           <Image
             style={styles.image}
@@ -46,7 +62,7 @@ export const CardHeader: FC<ICardHeaderProps> = ({ post }) => {
         )}
       </TouchableOpacity>
       <View style={styles.info}>
-        <TouchableOpacity style={styles.header}>
+        <TouchableOpacity onPress={goToProfile} style={styles.header}>
           <TCustomText weight="semi" style={styles.authorFullName}>
             {authorFullName}
           </TCustomText>

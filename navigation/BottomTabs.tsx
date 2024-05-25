@@ -13,7 +13,7 @@ export type BottomTabsParams = {
   Find: undefined
   Chats: undefined
   CreatePost: undefined
-  Profile: undefined
+  Profile: { userId?: string; authorFullName?: string; bloodType?: string }
 }
 
 const { Navigator, Screen } = createBottomTabNavigator<BottomTabsParams>()
