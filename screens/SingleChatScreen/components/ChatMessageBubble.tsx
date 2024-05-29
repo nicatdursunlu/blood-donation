@@ -35,7 +35,7 @@ export const ChatMessageBubble: FC<IChatMessageBubbleProps> = ({ message }) => {
 
   const myBubble: ViewStyle = {
     alignSelf: 'flex-end',
-    backgroundColor: colors.myMsg,
+    backgroundColor: colors.link,
     borderBottomStartRadius: 18,
   }
 
@@ -48,14 +48,14 @@ export const ChatMessageBubble: FC<IChatMessageBubbleProps> = ({ message }) => {
 
   return (
     <View style={[styles.container, { opacity: show ? 0.6 : 1 }]}>
-      {/* {show && (
+      {show && (
         <CustomText
           weight="semi"
           style={{ ...styles.time, ...{ color: colors.time } }}
         >
           {getMessageTime(createdAt)}
         </CustomText>
-      )} */}
+      )}
       <TouchableWithoutFeedback onLongPress={showTime} onPressOut={showTime}>
         <View style={bubbleStyles}>
           <CustomText
@@ -67,12 +67,12 @@ export const ChatMessageBubble: FC<IChatMessageBubbleProps> = ({ message }) => {
           >
             {text}
           </CustomText>
-          <CustomText
+          {/* <CustomText
             weight="semi"
             style={{ ...styles.time, ...{ color: colors.time } }}
           >
             {getMessageTime(createdAt)}
-          </CustomText>
+          </CustomText> */}
         </View>
       </TouchableWithoutFeedback>
     </View>
