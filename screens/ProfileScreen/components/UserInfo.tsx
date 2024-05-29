@@ -7,15 +7,16 @@ import { AvatarMaker, CustomBtn, CustomText, TCustomText } from '@/components'
 import { useAppSelector } from '@/store/hooks'
 import { CustomTheme } from '@/styles/theme'
 import { ProfileScreenProps } from '..'
+import { generateChatId } from '@/utils/helper'
 
 export const UserInfo: FC<ProfileScreenProps> = ({ navigation, route }) => {
   const { colors } = useTheme() as CustomTheme
 
   const { user } = useAppSelector((state) => state.auth)
 
-  const { fullName, bloodType, photo } = user
+  const { fullName, bloodType, photo, uid } = user
 
-  const isMyProfile = !route.params?.userId
+  const isMyProfile = !route.params?.authorId
 
   const btnColor = {
     borderColor: colors.inputBorder,
@@ -25,6 +26,30 @@ export const UserInfo: FC<ProfileScreenProps> = ({ navigation, route }) => {
   const editProfile = () => {
     navigation.navigate('EditProfile')
   }
+
+  const goToChatsScreen = () => {
+    navigation.navigate('SingleChat', {
+      chatId: generateChatId(uid, route.params?.authorId!),
+      authorFullName: route?.params?.authorFullName!,
+      authorPhoto: route?.params?.authorPhoto!,
+    })
+  }
+
+  const onPressHandler = () => {
+    if (isMyProfile) editProfile()
+    else goToChatsScreen()
+  }
+
+  //  const onPressHandler = () => {
+  //    if (!!profileType)
+  //      navigation.navigate('SingleChat', {
+  //        companion_name: otherProfile.fullname,
+  //        companion_img: otherProfile.photo,
+  //        chatID: generateChatID(userID, otherProfile.userID),
+  //        companion_id: otherProfile.userID,
+  //      })
+  //    else navigation.navigate('Edit Profile')
+  //  }
 
   return (
     <View style={styles.container}>
@@ -53,15 +78,14 @@ export const UserInfo: FC<ProfileScreenProps> = ({ navigation, route }) => {
       <CustomText weight="bold" style={styles.name}>
         {fullName}
       </CustomText>
-      {isMyProfile && (
-        <CustomBtn
-          width="100%"
-          title="edit_profile"
-          titleStyle={{ ...styles.btnText, ...{ color: colors.text } }}
-          onPress={editProfile}
-          style={{ ...styles.btn, ...btnColor }}
-        />
-      )}
+
+      <CustomBtn
+        width="100%"
+        title={isMyProfile ? 'edit_profile' : 'send_message'}
+        titleStyle={{ ...styles.btnText, ...{ color: colors.text } }}
+        onPress={onPressHandler}
+        style={{ ...styles.btn, ...btnColor }}
+      />
     </View>
   )
 }

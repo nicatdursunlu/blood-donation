@@ -8,16 +8,27 @@ import { useTranslation } from 'react-i18next'
 import { Icon } from '@ui-kitten/components'
 import { FC } from 'react'
 
+import { EditProfileScreen, ProfileScreen, SingleChatScreen } from '@/screens'
 import { useAppSelector } from '@/store/hooks'
-import { EditProfileScreen, ProfileScreen } from '@/screens'
 import { BottomTabs } from './BottomTabs'
 import { HeaderStyles } from 'styles'
 
 export type AppStackParams = {
   Home: undefined
-  Profile: { userId?: string; authorFullName?: string; bloodType?: string }
+  Profile: {
+    authorId?: string
+    authorFullName?: string
+    bloodType?: string
+    authorPhoto?: string | null
+  }
   BottomTabs: undefined
   EditProfile: undefined
+  Chats: undefined
+  SingleChat: {
+    authorFullName: string
+    authorPhoto: string | null
+    chatId: string
+  }
 }
 
 const { Navigator, Screen } = createStackNavigator<AppStackParams>()
@@ -83,6 +94,11 @@ export const AppStack: FC = () => {
           headerLeft: () => null,
           title: username,
         }}
+      />
+      <Screen
+        name="SingleChat"
+        component={SingleChatScreen}
+        options={{ headerShown: false }}
       />
     </Navigator>
   )

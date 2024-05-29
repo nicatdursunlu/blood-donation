@@ -1,19 +1,28 @@
-import { format } from 'date-fns'
+import {
+  format,
+  getDate,
+  getHours,
+  getMinutes,
+  getMonth,
+  getYear,
+} from 'date-fns'
 
 export const getFormattedDate = (date: Date) => {
   return date ? format(new Date(date), 'dd.MM.yyyy') : ''
 }
 
-export const getMessageTime = (time: Date | string) => {
+export const getMessageTime = (time: number) => {
   const date = new Date(time)
-  const hour = date.getHours()
-  const minute = date.getMinutes()
-  const day = date.getDate()
-  const month = date.getMonth()
-  const year = date.getFullYear()
+  const hour = getHours(date)
+  const minute = getMinutes(date)
+  const day = getDate(date)
+  const month = getMonth(date)
+  const year = getYear(date)
 
   const currentTime = new Date()
-  const currentDay = currentTime.getDate()
+  const currentDay = getDate(currentTime)
+
+  // console.log('time', day, currentDay)
 
   let lastMessageTime = null
 
