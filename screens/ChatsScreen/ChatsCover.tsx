@@ -6,7 +6,7 @@ import {
 } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import { Image } from 'react-native-elements'
-import { TMessage } from '@/types/chat.type'
+import { TChat } from '@/types/chat.type'
 import { FC } from 'react'
 
 import { AvatarMaker, CustomText } from '@/components'
@@ -14,13 +14,14 @@ import { getMessageTime } from '@/utils/date'
 import { CustomTheme } from '@/styles/theme'
 
 interface IChatsCoverProps {
-  message: TMessage
+  message: TChat
   onPress: () => void
 }
 
 export const ChatsCover: FC<IChatsCoverProps> = ({ message, onPress }) => {
   const { authorFullName, authorPhoto, isRead, lastMessage, createdAt } =
     message
+
   const { colors } = useTheme() as CustomTheme
 
   return (

@@ -42,7 +42,11 @@ export const CardHeader: FC<ICardHeaderProps> = ({ post, navigation }) => {
     if (navigation)
       isMyProfile
         ? navigation.navigate('Profile', {})
-        : navigation.navigate('Profile', { authorFullName, userId, bloodType })
+        : navigation.navigate('Profile', {
+            authorFullName,
+            authorId: userId,
+            bloodType,
+          })
   }
 
   return (

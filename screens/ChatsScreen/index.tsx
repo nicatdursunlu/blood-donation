@@ -1,33 +1,61 @@
-import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
+import {
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from 'firebase/firestore'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { StyleSheet, View, FlatList } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import { FC, useEffect, useState } from 'react'
 
-import { TMessage } from '@/types/chat.type'
+import { AppStackParams } from '@/navigation/AppStack'
+import { useAppSelector } from '@/store/hooks'
 import { CustomTheme } from '@/styles/theme'
 import { TCustomText } from '@/components'
+import { TChat } from '@/types/chat.type'
 import { ChatsCover } from './ChatsCover'
 import { db } from '@/utils/firebase'
 
-export const ChatsScreen: FC = () => {
+type ChatsScreenProps = NativeStackScreenProps<AppStackParams, 'Chats'>
+
+export const ChatsScreen: FC<ChatsScreenProps> = ({ navigation }) => {
   const { colors } = useTheme() as CustomTheme
 
-  const [messages, setMessages] = useState<TMessage[]>([])
+  const { uid } = useAppSelector((state) => state.auth.user)
+
+  const [messages, setMessages] = useState<TChat[]>([])
+
+  const getChats = () => {
+    const userChatsRef = doc(db, 'users_chats', uid)
+
+    onSnapshot(userChatsRef, (doc) => {
+      if (doc.exists()) {
+        const lists = doc.data()
+        const unionIds = Object.keys(lists)
+
+        const chatListsArr: TChat[] = []
+        unionIds.forEach((id) => chatListsArr.push({ id, ...lists[id] }))
+
+        setMessages(chatListsArr)
+      }
+    })
+  }
 
   useEffect(() => {
-    const q = query(collection(db, 'users_chats'), orderBy('createdAt', 'desc'))
-
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const res = snapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      })) as TMessage[]
-
-      setMessages(res)
-    })
-
-    return () => unsubscribe()
+    getChats()
   }, [])
+
+  const goToSingleChatScreen = ({ id, authorFullName, authorPhoto }: TChat) => {
+    navigation.navigate('SingleChat', {
+      chatId: id,
+      authorFullName,
+      authorPhoto,
+    })
+  }
 
   return (
     <View style={styles.container}>
@@ -37,7 +65,13 @@ export const ChatsScreen: FC = () => {
       <FlatList
         data={messages}
         renderItem={({ item }) => (
-          <ChatsCover key={item.id} message={item} onPress={() => {}} />
+          <ChatsCover
+            key={item.id}
+            message={item}
+            onPress={() => {
+              goToSingleChatScreen(item)
+            }}
+          />
         )}
       />
     </View>
