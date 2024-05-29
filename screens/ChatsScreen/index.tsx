@@ -1,13 +1,5 @@
-import {
-  collection,
-  doc,
-  getDoc,
-  onSnapshot,
-  orderBy,
-  query,
-  where,
-} from 'firebase/firestore'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { doc, onSnapshot, setDoc } from 'firebase/firestore'
 import { StyleSheet, View, FlatList } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import { FC, useEffect, useState } from 'react'
@@ -50,11 +42,33 @@ export const ChatsScreen: FC<ChatsScreenProps> = ({ navigation }) => {
   }, [])
 
   const goToSingleChatScreen = ({ id, authorFullName, authorPhoto }: TChat) => {
+    readMessage(id)
+
     navigation.navigate('SingleChat', {
       chatId: id,
       authorFullName,
       authorPhoto,
     })
+  }
+
+  const readMessage = async (id: TChat['id']) => {
+    try {
+      const selectedChat = messages.find((message) => message.id === id)
+
+      if (!selectedChat) throw new Error(`Chat with id ${id} not found`)
+
+      const userChatDoc = doc(db, 'users_chats', uid)
+
+      await setDoc(
+        userChatDoc,
+        {
+          [id]: { ...selectedChat, isRead: true },
+        },
+        { merge: true }
+      )
+    } catch (error: any) {
+      console.log('readMessage error =>', error.code, error.message)
+    }
   }
 
   return (

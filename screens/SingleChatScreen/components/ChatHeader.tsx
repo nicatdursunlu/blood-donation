@@ -36,7 +36,7 @@ export const ChatHeader: FC<SingleChatScreenProps> = ({
           <Image
             style={styles.img}
             source={{ uri: authorPhoto }}
-            PlaceholderContent={<ActivityIndicator />}
+            PlaceholderContent={<ActivityIndicator color={colors.primary} />}
             placeholderStyle={{ backgroundColor: '#f2f4f8' }}
           />
         ) : (
@@ -79,6 +79,6 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   name: {
-    fontSize: 15,
+    fontSize: 17,
   },
 })

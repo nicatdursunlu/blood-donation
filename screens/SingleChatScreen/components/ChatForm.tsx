@@ -34,8 +34,6 @@ export const ChatForm: FC<IChatFormProps> = ({ route }) => {
   const { user } = useAppSelector((state) => state.auth)
   const { uid: authorId, fullName, photo } = user
 
-  const [state, setState] = useState<boolean>(false)
-
   const [message, setMessage] = useState<TCreateMessage>({
     text: '',
     createdAt: serverTimestamp(),
@@ -85,6 +83,7 @@ export const ChatForm: FC<IChatFormProps> = ({ route }) => {
         companionRef,
         {
           [message.chatId]: {
+            authorId: user.uid,
             authorPhoto: user.photo,
             authorFullName: user.fullName,
             lastMessage: message.text,
@@ -100,6 +99,7 @@ export const ChatForm: FC<IChatFormProps> = ({ route }) => {
         userRef,
         {
           [message.chatId]: {
+            authorId: message.authorId,
             authorPhoto: message.authorPhoto,
             authorFullName: message.authorFullName,
             lastMessage: message.text,
@@ -123,58 +123,57 @@ export const ChatForm: FC<IChatFormProps> = ({ route }) => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-      style={[
-        styles.container,
-        {
-          backgroundColor: colors.chatBG,
-          justifyContent: state ? 'space-between' : 'center',
-        },
-      ]}
+      style={styles().container}
     >
       <Field
+        multiline
         value={message.text}
         placeholder="type_here"
         textStyle={{ color: colors.text }}
         onChangeText={(val) => setMessageText(val)}
-        style={{
-          ...styles.field,
-          ...{
-            backgroundColor: colors.chatFormBG,
-            width: state ? '85%' : '70%',
-          },
-        }}
+        style={styles().field}
       />
-      {/* {state && ( */}
-      <TouchableOpacity onPress={sendMessageHandler}>
-        <Icon
-          name="send"
-          pack="feather"
-          style={[styles.icon, { color: colors.secondaryText }]}
-        />
+      <TouchableOpacity style={styles().sendBtn} onPress={sendMessageHandler}>
+        <Icon name="send" pack="ion" style={styles().icon} />
       </TouchableOpacity>
-      {/* )} */}
     </KeyboardAvoidingView>
   )
 }
+const styles = () => {
+  const { colors } = useTheme() as CustomTheme
 
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    alignContent: 'center',
-    flexDirection: 'row',
-    paddingHorizontal: 10,
-    borderColor: '#999999',
-    borderTopWidth: StyleSheet.hairlineWidth,
-    marginBottom: 15,
-  },
-  field: {
-    marginTop: 7,
-    marginBottom: 7,
-    borderRadius: 20,
-    backgroundColor: '#fff',
-  },
-  icon: {
-    height: 25,
-    marginRight: 10,
-  },
-})
+  return StyleSheet.create({
+    container: {
+      alignItems: 'center',
+      alignContent: 'center',
+      flexDirection: 'row',
+      paddingHorizontal: 10,
+      borderColor: '#999999',
+      borderTopWidth: StyleSheet.hairlineWidth,
+      marginBottom: 15,
+      justifyContent: 'center',
+      backgroundColor: colors.chatBG,
+    },
+    field: {
+      marginTop: 7,
+      marginBottom: 7,
+      borderRadius: 20,
+      width: '85%',
+      backgroundColor: colors.chatFormBG,
+    },
+    icon: {
+      height: 20,
+      color: '#fff',
+    },
+    sendBtn: {
+      borderRadius: 100,
+      width: 45,
+      height: 45,
+      backgroundColor: colors.primary,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginHorizontal: 10,
+    },
+  })
+}

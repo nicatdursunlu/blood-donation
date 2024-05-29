@@ -22,8 +22,6 @@ export const getMessageTime = (time: number) => {
   const currentTime = new Date()
   const currentDay = getDate(currentTime)
 
-  // console.log('time', day, currentDay)
-
   let lastMessageTime = null
 
   const makeFormattedTime = (time: number) => {
