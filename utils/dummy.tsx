@@ -54,49 +54,49 @@ export const AUTH_DATA = [
   },
 ]
 
-// export const ITEMS = [
-//   {
-//     title: 'saved',
-//     icon: () => (
-//       <Icon
-//         name="bookmark"
-//         pack="feather"
-//         style={{ color: '#999999', height: 23 }}
-//       />
-//     ),
-//     goTo: 'Saved',
-//   },
-//   {
-//     title: 'settings',
-//     icon: () => (
-//       <Icon
-//         name="settings"
-//         pack="feather"
-//         style={{ color: '#999999', height: 23 }}
-//       />
-//     ),
-//     goTo: 'Settings',
-//   },
-//   {
-//     title: 'about',
-//     icon: () => (
-//       <Icon
-//         name="info"
-//         pack="feather"
-//         style={{ color: '#999999', height: 23 }}
-//       />
-//     ),
-//     goTo: 'About',
-//   },
-//   {
-//     title: 'rate_us',
-//     icon: () => (
-//       <Icon
-//         name="star"
-//         pack="feather"
-//         style={{ color: '#999999', height: 23 }}
-//       />
-//     ),
-//     goTo: 'Rate',
-//   },
-// ]
+export const DRAWER_ITEMS = [
+  {
+    title: 'saved',
+    icon: () => (
+      <Icon
+        name="bookmark"
+        pack="feather"
+        style={{ color: '#999999', height: 23 }}
+      />
+    ),
+    goTo: 'Saved',
+  },
+  {
+    title: 'settings',
+    icon: () => (
+      <Icon
+        name="settings"
+        pack="feather"
+        style={{ color: '#999999', height: 23 }}
+      />
+    ),
+    goTo: 'Settings',
+  },
+  {
+    title: 'about',
+    icon: () => (
+      <Icon
+        name="info"
+        pack="feather"
+        style={{ color: '#999999', height: 23 }}
+      />
+    ),
+    goTo: 'About',
+  },
+  {
+    title: 'rate_us',
+    icon: () => (
+      <Icon
+        name="star"
+        pack="feather"
+        style={{ color: '#999999', height: 23 }}
+      />
+    ),
+    goTo: 'Rate',
+  },
+]

@@ -2,6 +2,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer'
 import { FC } from 'react'
 
 import { ProfileScreen } from '@/screens'
+import { DrawerContent } from '@/commons'
 
 export type DrawerStackParams = {
   Profile: {
@@ -18,12 +19,13 @@ const { Navigator, Screen } = createDrawerNavigator<DrawerStackParams>()
 export const DrawerStack: FC = () => {
   return (
     <Navigator
-      // drawerContent={({ ...props }) => <DrawerContent {...props} />}
-      // drawerContentOptions={{
-      //   activeTintColor: '#e91e63',
-      //   itemStyle: { marginVertical: 30 },
-      // }}
-      screenOptions={{ headerShown: false }}
+      drawerContent={({ ...props }) => <DrawerContent {...props} />}
+      screenOptions={{
+        drawerActiveTintColor: '#e91e63',
+        drawerItemStyle: { marginVertical: 30 },
+        // itemStyle: { marginVertical: 30 },
+        headerShown: false,
+      }}
     >
       <Screen name="Profile" component={ProfileScreen} />
     </Navigator>

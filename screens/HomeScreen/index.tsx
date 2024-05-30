@@ -6,19 +6,13 @@ import { FC, useCallback, useState } from 'react'
 import { BottomTabsParams } from '@/navigation/BottomTabs'
 import { CardCover } from './components/CardCover'
 import { getPosts } from '@/services/post.service'
-import { logOut } from 'store/features/authSlice'
-import { useAppDispatch } from 'store/hooks'
 import { CustomTheme } from '@/styles/theme'
 import { TPost } from '@/types/post.type'
-import { CustomBtn } from '@/components'
-import { auth } from 'utils/firebase'
 
 type HomeScreenProps = BottomTabScreenProps<BottomTabsParams, 'Home'>
 export type HomeScreenNavigationProp = HomeScreenProps['navigation']
 
 export const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
-  const dispatch = useAppDispatch()
-
   const { colors } = useTheme() as CustomTheme
 
   const [posts, setPosts] = useState<TPost[]>([])
@@ -36,11 +30,6 @@ export const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
       getAllPosts()
     }, [])
   )
-
-  const logOutHandler = async () => {
-    await auth.signOut()
-    dispatch(logOut())
-  }
 
   return (
     <View style={styles.container}>
@@ -60,7 +49,6 @@ export const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
           )}
         />
       )}
-      <CustomBtn title="Log out" onPress={logOutHandler} />
     </View>
   )
 }
