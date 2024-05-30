@@ -41,13 +41,15 @@ export const ChatsScreen: FC<ChatsScreenProps> = ({ navigation }) => {
     getChats()
   }, [])
 
-  const goToSingleChatScreen = ({ id, authorFullName, authorPhoto }: TChat) => {
+  const goToSingleChatScreen = (chat: TChat) => {
+    const { id, authorFullName, authorPhoto, authorId } = chat
     readMessage(id)
 
     navigation.navigate('SingleChat', {
       chatId: id,
       authorFullName,
       authorPhoto,
+      authorId,
     })
   }
 

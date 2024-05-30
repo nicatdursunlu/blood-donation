@@ -20,6 +20,7 @@ export type AppStackParams = {
     authorFullName?: string
     bloodType?: string
     authorPhoto?: string | null
+    profileType: 'user' | 'other'
   }
   BottomTabs: undefined
   EditProfile: undefined
@@ -27,6 +28,7 @@ export type AppStackParams = {
   SingleChat: {
     authorFullName: string
     authorPhoto: string | null
+    authorId: string
     chatId: string
   }
 }
@@ -83,7 +85,14 @@ export const AppStack: FC = () => {
         name="Profile"
         component={ProfileScreen}
         options={{
-          headerLeft: () => null,
+          headerLeft: (props) => (
+            <Icon
+              {...props}
+              name="arrow-back"
+              pack="ion"
+              style={{ height: 25, color: colors.text, marginLeft: 15 }}
+            />
+          ),
           title: username,
         }}
       />
