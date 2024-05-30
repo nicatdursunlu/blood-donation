@@ -17,10 +17,15 @@ export const ChatHeader: FC<SingleChatScreenProps> = ({
   route,
   navigation,
 }) => {
-  const { authorFullName, authorPhoto, chatId } = route.params
+  const { authorFullName, authorPhoto, authorId } = route.params
   const { colors } = useTheme() as CustomTheme
 
-  const onPress = () => {}
+  const onPress = () => {
+    navigation.navigate('Profile', {
+      authorId,
+      profileType: 'other',
+    })
+  }
 
   return (
     <View style={[styles.container, { backgroundColor: colors.chatBG }]}>

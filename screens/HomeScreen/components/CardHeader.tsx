@@ -41,11 +41,12 @@ export const CardHeader: FC<ICardHeaderProps> = ({ post, navigation }) => {
   const goToProfile = () => {
     if (navigation)
       isMyProfile
-        ? navigation.navigate('Profile', {})
+        ? navigation.navigate('Profile', { profilerType: 'user' })
         : navigation.navigate('Profile', {
             authorFullName,
             authorId: userId,
             bloodType,
+            profilerType: 'other',
           })
   }
 

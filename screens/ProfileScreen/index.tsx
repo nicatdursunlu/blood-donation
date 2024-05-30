@@ -1,10 +1,16 @@
+import {
+  CompositeScreenProps,
+  useFocusEffect,
+  useTheme,
+} from '@react-navigation/native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { collection, getDocs, query, where } from 'firebase/firestore'
-import { useFocusEffect, useTheme } from '@react-navigation/native'
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs'
 import { ActivityIndicator, StyleSheet, View } from 'react-native'
-import { FC, useCallback, useState } from 'react'
+import { FC, useCallback, useEffect, useState } from 'react'
 
 import { CardCover } from '../HomeScreen/components/CardCover'
+import { DrawerStackParams } from '@/navigation/DrawerStack'
 import { AppStackParams } from '@/navigation/AppStack'
 import { UserInfo } from './components/UserInfo'
 import { useAppSelector } from '@/store/hooks'
@@ -14,9 +20,9 @@ import { TPost } from '@/types/post.type'
 import { Container } from '@/commons'
 import { db } from '@/utils/firebase'
 
-export type ProfileScreenProps = NativeStackScreenProps<
-  AppStackParams,
-  'Profile'
+export type ProfileScreenProps = CompositeScreenProps<
+  NativeStackScreenProps<AppStackParams, 'Profile'>,
+  BottomTabScreenProps<DrawerStackParams, 'Profile'>
 >
 
 export const ProfileScreen: FC<ProfileScreenProps> = ({
@@ -29,13 +35,17 @@ export const ProfileScreen: FC<ProfileScreenProps> = ({
     user: { uid },
   } = useAppSelector((state) => state.auth)
 
+  const isMyProfile =
+    route?.params?.profileType === 'user' || !route?.params?.profileType
+
   const [posts, setPosts] = useState<TPost[]>([])
   const [loading, setLoading] = useState<boolean>(false)
 
   const getPosts = async () => {
     try {
       setLoading(true)
-      const q = query(collection(db, 'posts'), where('userId', '==', uid))
+      const userId = isMyProfile ? uid : route?.params?.authorId
+      const q = query(collection(db, 'posts'), where('userId', '==', userId))
       const querySnapshot = await getDocs(q)
 
       querySnapshot.forEach((doc) => {
